@@ -1,0 +1,21 @@
+<div class="product-list">
+    <div *ngFor="let product of displayedProduct" class="card">
+      <div class="imgBox">
+        <img [src]="product.image" alt="{{product.title}}" class="mouse">
+      </div>
+      <div class="contentBox">
+        <h3>{{ product.title }}</h3>
+        <h2 class="price">{{ product.price | currency }}</h2>
+        <a [routerLink]="['/products', product.id]" class="buy">Xem chi tiết</a>
+      </div>
+    </div>
+    <div style="width: 100%;">
+    <mat-paginator
+    [length]="products.length"
+    [pageSize]="pageSize"
+    showFirstLastButtons
+    (page)="updateDisplayedData()">
+    </mat-paginator>
+    </div>
+  </div>
+  
