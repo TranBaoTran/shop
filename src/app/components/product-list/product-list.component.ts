@@ -4,7 +4,6 @@ import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-product-list',
@@ -32,8 +31,8 @@ export class ProductListComponent implements AfterViewInit{
   updateDisplayedData() {
     this.productService.getProducts().subscribe(data => {
       this.products = data;
-    });
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    this.displayedProduct = this.products.slice(startIndex, startIndex + this.paginator.pageSize);
+      const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+      this.displayedProduct = this.products.slice(startIndex, startIndex + this.paginator.pageSize);
+    });    
   }
 }
