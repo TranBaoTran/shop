@@ -29,6 +29,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onCategoryClick(category: string) {
-    this.router.navigate(['/products', category]); 
+    this.router.navigate([`category/${category}`]); 
   }
 }
