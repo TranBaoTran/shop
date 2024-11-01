@@ -3,12 +3,12 @@ import { CommonModule, TitleCasePipe } from '@angular/common';
 import { MdbDropdownModule } from 'mdb-angular-ui-kit/dropdown';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { ProductService } from '../../services/product.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MdbDropdownModule, MdbCollapseModule, TitleCasePipe],
+  imports: [CommonModule, MdbDropdownModule, MdbCollapseModule, TitleCasePipe, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -26,9 +26,5 @@ export class HeaderComponent implements OnInit {
     this.productService.getCategories().subscribe(data =>{
       this.categories = data;
     })
-  }
-
-  onCategoryClick(category: string) {
-    this.router.navigate([`category/${category}`]); 
   }
 }

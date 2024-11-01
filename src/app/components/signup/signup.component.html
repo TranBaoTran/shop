@@ -1,0 +1,71 @@
+<!-- Section: Design Block -->
+<section class="min-vh-100 d-flex align-items-center" style="background-color: hsl(0, 0%, 96%)">
+    <!-- Jumbotron -->
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+      <div class="container">
+        <div class="row gx-lg-5 align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <h1 class="my-5 display-3 fw-bold ls-tight">
+              Fake Store API <br />
+              <span class="text-primary">for demo</span>
+            </h1>
+            <p style="color: hsl(217, 10%, 50.8%)">
+                fakeStoreApi can be used with any type of shopping project that needs products, carts, and users in JSON format. you can use examples below to check how fakeStoreApi works and feel free to enjoy it in your awesome projects!
+            </p>
+          </div>
+  
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+                <form #userSignUp = "ngForm" (ngSubmit) = "signUp(userSignUp.value)">
+                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-floating">
+                        <input type="text" id="form3Example1" class="form-control" name = "firstname" ngModel/>
+                        <label class="form-label active" for="form3Example1">First name</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-floating">
+                        <input type="text" id="form3Example2" class="form-control" name = "lastname" ngModel/>
+                        <label class="form-label active" for="form3Example2">Last name</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <div data-mdb-input-init class="form-floating mb-4">
+                    <input type="tel" id="form3Example6" class="form-control" name = "phone" ngModel/>
+                    <label class="form-label active" for="form3Example6">Phone</label>
+                  </div>
+
+                  <!-- Email input -->
+                  <div data-mdb-input-init class="form-floating mb-4">
+                    <input type="email" id="form3Example3" class="form-control" name = "email" ngModel/>
+                    <label class="form-label active" for="form3Example3">Email address</label>
+                  </div>
+
+                  <div data-mdb-input-init class="form-floating mb-4">
+                    <input type="text" id="form3Example4" class="form-control" name = "username" ngModel/>
+                    <label class="form-label active" for="form3Example4">User name</label>
+                  </div>
+  
+                  <!-- Password input -->
+                  <div data-mdb-input-init class="form-floating mb-4">
+                    <input type="password" id="form3Example5" class="form-control" name = "password" ngModel/>
+                    <label class="form-label active" for="form3Example5">Password</label>
+                  </div>
+  
+                  <!-- Submit button -->
+                  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                    Sign up
+                  </button>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

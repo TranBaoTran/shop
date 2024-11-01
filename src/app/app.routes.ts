@@ -1,8 +1,16 @@
 import { Routes } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 export const routes: Routes = [
-    { path: '', component: ProductListComponent},
-    { path: 'category/:query', component: ProductListComponent}
+    {   path: '', 
+        component: HomeComponent,
+        children: [
+            { path: '', component: ProductListComponent },
+            { path: 'category/:query', component: ProductListComponent }
+        ]},
+    { path: 'login', component: LoginComponent},
+    { path: 'signup', component: SignupComponent}
 ];

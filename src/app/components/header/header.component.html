@@ -32,7 +32,7 @@
             <li>
               <a 
                 class="dropdown-item" 
-                (click)="onCategoryClick(category)"
+                [routerLink]="['/category', category]"
                 >
                   {{category | titlecase}}
                 </a>
@@ -44,10 +44,10 @@
       </div>
 
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-link px-3 me-2">
+        <button type="button" class="btn btn-link px-3 me-2" [routerLink]="['/login']">
           Login
         </button>
-        <button type="button" class="btn btn-primary me-3">
+        <button type="button" class="btn btn-primary me-3" [routerLink]="['/signup']"> 
           Sign up
         </button>
   
