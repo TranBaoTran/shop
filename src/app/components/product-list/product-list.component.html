@@ -33,7 +33,9 @@
             <img [src]="product.image" height="200">
           </div>
           
-          <div class="mt-5">
+          <div class="mt-5" 
+                (click)="goToProductDetail(product)"
+                style="cursor: pointer;">
             <h6 class="text-uppercase mb-0">{{ product.title }}</h6>
           </div>
   

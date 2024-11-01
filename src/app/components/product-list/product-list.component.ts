@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-product-list',
@@ -41,7 +41,7 @@ export class ProductListComponent implements OnInit{
   products: undefined | Product[];
   Math = Math;
 
-  constructor(private productService: ProductService, private activeRoute: ActivatedRoute) {}
+  constructor(private productService: ProductService, private activeRoute: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
@@ -65,4 +65,9 @@ export class ProductListComponent implements OnInit{
       });
     }
   }
+
+  goToProductDetail(product: any) {
+    this.router.navigate(['/product-detail', product.id], { state: { product } });
+  }
+  
 }
