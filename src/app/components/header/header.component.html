@@ -44,46 +44,51 @@
       </div>
 
       <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-link px-3 me-2" [routerLink]="['/login']">
-          Login
-        </button>
-        <button type="button" class="btn btn-primary me-3" [routerLink]="['/signup']"> 
-          Sign up
-        </button>
+        <div *ngIf = "!isLoggedIn">
+          <button type="button" class="btn btn-link px-3 me-2" [routerLink]="['/login']">
+            Login
+          </button>
+          <button type="button" class="btn btn-primary me-3" [routerLink]="['/signup']"> 
+            Sign up
+          </button>
+        </div>
+        
   
         <a class="me-3">
           <i class="fa fa-shopping-cart fa-lg"></i>
-          <span class="badge rounded-pill badge-notification bg-danger">1</span>
+          <span class="badge rounded-pill badge-notification bg-danger">0</span>
         </a>
 
-        <ul class="navbar-nav">
-          <!-- Avatar -->
-          <li mdbDropdown class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle d-flex align-items-center"
-              id="navbarDropdownMenuLink"
-              role="button"
-              mdbDropdownToggle
-              aria-expanded="false"
-            >
-              <img
-                src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp"
-                class="rounded-circle"
-                height="22"
-                alt=""
-                loading="lazy"
-              />
-            </a>
-            <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li>
-                <a class="dropdown-item" href="#">My profile</a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Logout</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <div *ngIf = "isLoggedIn">
+          <ul class="navbar-nav">
+            <!-- Avatar -->
+            <li mdbDropdown class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle d-flex align-items-center"
+                id="navbarDropdownMenuLink"
+                role="button"
+                mdbDropdownToggle
+                aria-expanded="false"
+              >
+                <img
+                  src="https://mdbootstrap.com/img/Photos/Avatars/img (31).webp"
+                  class="rounded-circle"
+                  height="22"
+                  alt=""
+                  loading="lazy"
+                />
+              </a>
+              <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li>
+                  <a class="dropdown-item" href="#">My profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click) = "logOut()">Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
   
       </div>
 

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Login, User } from '../models/user.model';
+import { Login, LoginResponse, User } from '../models/user.model';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -16,31 +16,14 @@ export class UserService {
   constructor(private http: HttpClient, private router:Router) { }
 
   userSignUp(data : User){
-    return this.http.post(this.apiUrl, data, {observe: 'response'}).subscribe((result) => {
-      console.log(result);
-      if(result){
-        this.isUserLoggedIn.next(true);
-        localStorage.setItem('user', JSON.stringify(result));
-        this.router.navigate(['/']);
-      }
-    });
+    return this.http.post(this.apiUrl, data);
   }
 
-  reloadUser(){
-    if(localStorage.getItem('user')){
-      this.isUserLoggedIn.next(true);
-      this.router.navigate(['/']);
-    }
+  userLogIn(data : Login): Observable<LoginResponse>{
+    return this.http.post<LoginResponse>(this.apiLoginUrl, data);
   }
 
-  userLogin(data : Login){
-    return this.http.post(this.apiLoginUrl, data, {observe : 'response'}).subscribe((result) => {
-      if(result){
-        console.log(result);
-        this.isLoginError.emit(false);
-      }else{
-        this.isLoginError.emit(true);
-      }
-    })
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

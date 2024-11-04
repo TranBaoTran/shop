@@ -26,11 +26,17 @@ export class SignupComponent implements OnInit {
   constructor(private userService : UserService, private router: Router) {}
   
   ngOnInit(): void {
-    this.userService.reloadUser();
+    
   }
 
   signUp(data: Omit<User, 'address'>):void{
     const userData: User = { ...data, address: this.address };
-    this.userService.userSignUp(userData);
+    this.userService.userSignUp(userData).subscribe(data => {
+      if(data){
+        window.alert('Sign up successfully. Please log in.');
+      }else{
+        window.alert('Sign up error.');
+      }
+    });
   }
 }
