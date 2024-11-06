@@ -66,8 +66,8 @@ export class ProductListComponent implements OnInit{
     }
   }
 
-  goToProductDetail(product: any) {
-    this.router.navigate(['/product-detail', product.id], { state: { product } });
+  goToProductDetail(id : number): void {
+    this.router.navigate(['/product-detail', id]);
   }
   
 }

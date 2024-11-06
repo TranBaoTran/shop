@@ -8,7 +8,7 @@ export interface Product {
     rating: Rating
   }
   
-  export interface Rating {
+export interface Rating {
     rate: number
     count: number
   }

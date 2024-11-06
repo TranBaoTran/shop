@@ -22,7 +22,7 @@
    <div class="container">
     <div class="row">
       <div class="col-md-4 d-flex justify-content-center align-items-center" *ngFor="let product of products">
-        <div class="card p-3 fixed-card-height" style="width: 600px;">
+        <div class="card p-3 fixed-card-height" style="width: 600px;" (click)=" goToProductDetail(product.id) ">
           <div class="d-flex justify-content-between align-items-center">
             <div class="mt-2">
               <h4 class="text-uppercase">{{ product.category }}</h4>
@@ -33,9 +33,7 @@
             <img [src]="product.image" height="200">
           </div>
           
-          <div class="mt-5" 
-                (click)="goToProductDetail(product)"
-                style="cursor: pointer;">
+          <div class="mt-5">
             <h6 class="text-uppercase mb-0">{{ product.title }}</h6>
           </div>
   
