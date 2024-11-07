@@ -51,3 +51,14 @@ button {
   color: white;
   border-radius: 5px; 
 }
+
+.quantity-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+
+.quantity-container span {
+  font-size: 1.2em; /* Định dạng cho số lượng */
+}

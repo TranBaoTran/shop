@@ -25,9 +25,11 @@
             </td>
             <td>{{ item.title }}</td>
             <td>
-              <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
-              {{ item.quantity }}
-              <button class="btn btn-sm btn-primary"  (click)="increaseQuantity(item)">+</button>
+              <div class="quantity-container">
+                <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
+                <span>{{ item.quantity }}</span>
+                <button class="btn btn-sm btn-primary" (click)="increaseQuantity(item)">+</button>
+              </div>
             </td>
             <td>{{ item.price | currency }}</td>
             <td>{{ item.price * item.quantity | currency }}</td>
@@ -40,7 +42,7 @@
   
       <div class="cart-summary">
         <p>Total Amount: {{ totalAmount$ | async | currency }}</p>
-        <button (click)="checkout()" style="background-color: #007bff; color:white">Checkout</button>
+        <button (click)="checkout()" style="background-color: #007bff; color:white; border-color:#007bff; border-radius:5px">Checkout</button>
       </div>
     </div>
   </div>
