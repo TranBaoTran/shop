@@ -15,6 +15,10 @@ export class CartService {
 
   totalAmount$ = this.totalAmountSubject.asObservable();
   totalItems$ = this.totalItemsSubject.asObservable();
+
+  constructor() {
+    this.loadCartFromLocalStorage();
+  }
   
   addToCart(item: CartItem): void {
     const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
@@ -60,6 +64,7 @@ export class CartService {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       this.cartItems = JSON.parse(savedCart);
+      this.updateCartState();
     }
   }
 }

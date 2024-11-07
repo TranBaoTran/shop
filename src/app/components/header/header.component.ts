@@ -34,6 +34,7 @@ export class HeaderComponent implements OnInit {
     this.getCategories();
     this.isLoggedIn = this.userService.isLoggedIn();
     this.cartItems = this.cartService.getCartItems();
+    this.totalItems$ = this.cartService.totalItems$;
   }
 
   getCategories(){
