@@ -52,12 +52,27 @@
             Sign up
           </button>
         </div>
-        
-  
-        <a class="me-3">
-          <i class="fa fa-shopping-cart fa-lg"></i>
-          <span class="badge rounded-pill badge-notification bg-danger">0</span>
-        </a>
+      
+        <div class="cart-icon-wrapper">
+          <a class="me-3" routerLink="/cart">
+            <i class="fa fa-shopping-cart fa-lg"></i>
+            <span class="badge rounded-pill badge-notification bg-danger">{{ totalItems$ | async }}</span>
+          </a>
+          <!-- danh sách cart -->
+          <div class="cart-items-dropdown">
+            <div class="cart-title">Recently Added Products</div>
+            <ul *ngFor="let item of cartItems">
+              <li class="cart-item">
+                <img [src]="item.image" alt="Product Image" width="30" height="30">
+                <span>{{ item.title }}</span>
+                <span class="price">{{ item.price | currency }}</span>
+              </li>
+            </ul>
+            <div class="view-cart">
+              <a routerLink="/cart" class="btn btn-primary btn-sm">View My Shopping Cart</a>
+            </div>
+          </div>
+        </div>        
 
         <div *ngIf = "isLoggedIn">
           <ul class="navbar-nav">
