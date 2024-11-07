@@ -9,87 +9,57 @@ import { ProductService } from './product.service';
 
 
 export class CartService {
-  // private items: CartItem[] = [];
-  // private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  cartItems: CartItem[] = []; 
+  private totalAmountSubject = new BehaviorSubject<number>(0);
+  private totalItemsSubject = new BehaviorSubject<number>(0);
 
-  // cart$ = this.cartItemsSubject.asObservable();
-  // totalItems$= new BehaviorSubject<number>(0);
-
-  // constructor(private productService: ProductService) {}
-
-  // // Lấy danh sách
-  // getCartItems(): CartItem[] {
-  //   return this.items;
-  // }
-
-  // addToCart(product: CartItem) {
-  //   const existingItem = this.items.find(item => item.productId === product.productId);
-  //   if (existingItem) {
-  //     existingItem.quantity += product.quantity;
-  //   } else {
-  //     this.items.push(product);
-  //   }
-  //   this.updateCartState();
-  // }
-
-  //  // Cập nhật tổng số lượng sản phẩm
-  //  private updateCartState(): void {
-  //   const totalQuantity = this.items.reduce((sum, item) => sum + item.quantity, 0);
-  //   this.totalItems$.next(totalQuantity);
-  //   this.cartItemsSubject.next(this.items);
-  //   this.saveCartToLocalStorage();
-  // }
-
-  //  // Cập nhật số lượng sản phẩm trong giỏ hàng
-  //  updateQuantity(productId: number, quantity: number): void {
-  //   const item = this.items.find(item => item.productId === productId);
-  //   if (item) {
-  //     item.quantity = quantity;
-  //     this.updateCartState();
-  //   }
-  // }
-
-  // // Xóa sản phẩm khỏi giỏ hàng
-  // removeFromCart(productId: number): void {
-  //   this.items = this.items.filter(item => item.productId !== productId);
-  //   this.updateCartState();
-  // }
-
-  // private saveCartToLocalStorage(): void {
-  //   localStorage.setItem('cart', JSON.stringify(this.items));
-  // }
-  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
-  private items: CartItem[] = [];
-  cartItems$ = this.cartItemsSubject.asObservable();
-  totalAmount$ = this.cartItems$.pipe(
-    map(cartItems => {
-      return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
-    })
-  );
-  totalItems$= new BehaviorSubject<number>(0);
-
-  addToCart(item: CartItem) {
-    const currentItems = this.cartItemsSubject.value;
-    const updatedItems = [...currentItems, item];
-    this.cartItemsSubject.next(updatedItems);
+  totalAmount$ = this.totalAmountSubject.asObservable();
+  totalItems$ = this.totalItemsSubject.asObservable();
+  
+  addToCart(item: CartItem): void {
+    const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
+    if (existingItem) {
+      existingItem.quantity += item.quantity;
+    } else {
+      this.cartItems.push(item);
+    }
+    this.updateCartState();
   }
 
-  getCartItems(): Observable<CartItem[]> {
-    return this.cartItems$;
+  getCartItems(): CartItem[] {
+    return this.cartItems;
+  }
+
+  private updateCartState(): void {
+    const totalAmount = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalQuantity = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    // phát giá trị
+    this.totalAmountSubject.next(totalAmount);
+    this.totalItemsSubject.next(totalQuantity);
+    this.saveCartToLocalStorage();
   }
 
   updateQuantity(productId: number, quantity: number) {
-    const totalQuantity = this.items.reduce((sum: any, item: { quantity: any; }) => sum + item.quantity, 0);
-    const updatedItems = this.cartItemsSubject.value.map(item => 
-      item.productId === productId ? { ...item, quantity } : item
-    );
-    this.cartItemsSubject.next(updatedItems);
-    this.totalItems$.next(totalQuantity);
-    
+    const item = this.cartItems.find(cartItem => cartItem.productId === productId);
+    if (item) {
+      item.quantity = quantity;
+      this.updateCartState();
+    }
   }
 
   removeFromCart(productId: number) {
-    const updatedItems = this.cartItemsSubject.value.filter(item => item.productId !== productId);
-    this.cartItemsSubject.next(updatedItems);
+    this.cartItems = this.cartItems.filter(item => item.productId !== productId);
+    this.updateCartState();
+  }
+
+  private saveCartToLocalStorage(): void {
+    localStorage.setItem('cart', JSON.stringify(this.cartItems));
+  }
+
+  private loadCartFromLocalStorage(): void {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      this.cartItems = JSON.parse(savedCart);
+    }
   }
 }

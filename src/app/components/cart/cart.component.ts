@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit{
-  // cập nhật tự động
   cartItems: CartItem[] = [];
   totalAmount$: Observable<number>;  
 
@@ -22,18 +21,8 @@ export class CartComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartItems = items;  // Cập nhật cartItems khi có sự thay đổi
-    });
+    this.cartItems = this.cartService.getCartItems();
   }
-
-  // getTotalAmount(): number {
-  //   let total = 0;
-  //   this.cartItems$.subscribe(cartItems => {
-  //     total = cartItems.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-  //   });
-  //   return total;
-  // }
   
   increaseQuantity(item: CartItem): void {
     item.quantity++;
@@ -41,21 +30,17 @@ export class CartComponent implements OnInit{
   }
 
   decreaseQuantity(item: CartItem): void {
-    if (item.productId && item.quantity > 1) {
+    if (item.quantity > 1) {
       item.quantity--;
       this.cartService.updateQuantity(item.productId, item.quantity);
     }
   }
 
   removeFromCart(item: CartItem): void {
-    if (item.productId) {
-      this.cartService.removeFromCart(item.productId);
-    }
+    this.cartService.removeFromCart(item.productId);
+    this.cartItems = this.cartService.getCartItems(); // Cập nhật danh sách sau khi xóa
   }
 
-  // checkout(): void {
-  //   alert('Proceeding to checkout with total amount: ' + this.getTotalAmount());
-  // }
   checkout(): void {
     this.totalAmount$.subscribe(totalAmount => {
       alert('Proceeding to checkout with total amount: ' + totalAmount);

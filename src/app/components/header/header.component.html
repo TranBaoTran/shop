@@ -59,7 +59,7 @@
             <span class="badge rounded-pill badge-notification bg-danger">{{ totalItems$ | async }}</span>
           </a>
           <!-- danh sách cart -->
-          <div class="cart-items-dropdown" *ngIf="cartItems$ | async as cartItems">
+          <div class="cart-items-dropdown">
             <div class="cart-title">Recently Added Products</div>
             <ul *ngFor="let item of cartItems">
               <li class="cart-item">

@@ -82,5 +82,6 @@ export class ProductListComponent implements OnInit{
       image: product.image,
       quantity: 1 
     });
+    console.log(product)
   }
 }

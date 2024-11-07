@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -11,14 +12,17 @@ import { ActivatedRoute } from '@angular/router';
 export class ProductDetailComponent {
   product: any;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private productService : ProductService) {}
 
   ngOnInit(): void {
-    if (history.state && history.state.product) {
-      this.product = history.state.product;
-    } else {
-      const productId = this.route.snapshot.paramMap.get('id');
-      // Tải dữ liệu từ server nếu không có trong `state`
-    }
+    this.getProduct();
   }
+
+  getProduct(){
+    this.productService.getProductById(this.route.snapshot.params['id']).subscribe(data => {
+      if(data){
+        this.product = data;
+      }
+    })
+  } 
 }

@@ -21,22 +21,19 @@ export class HeaderComponent implements OnInit {
   categories:string[] = [];
   isLoggedIn!: boolean;
   // cart
-  cartItems$: Observable<CartItem[]> = new Observable<CartItem[]>();
-  totalItems$: Observable<number>= new Observable<number>();  
+  cartItems: CartItem[] = [];
+  totalItems$: Observable<number>;
 
   constructor(
     private productService: ProductService,
     private userService: UserService,
     private cartService: CartService
-  ) {
-    // khoi tao so luong, cart
-    this.totalItems$ = this.cartService.totalItems$;
-    this.cartItems$ = this.cartService.getCartItems();
-  }
+  ) {this.totalItems$ = this.cartService.totalItems$;}
 
   ngOnInit(): void {
     this.getCategories();
     this.isLoggedIn = this.userService.isLoggedIn();
+    this.cartItems = this.cartService.getCartItems();
   }
 
   getCategories(){
