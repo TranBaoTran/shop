@@ -27,4 +27,18 @@ export class ProductService {
   getProductsByCategory(category: string): Observable<Product[]> {
     return this.http.get<Product[]>(`${this.apiUrl}/category/${category}`);
   }
+
+  addProduct(product: { title: string, price: number, description: string, image: string, category: string }): Observable<Product> {
+    product.image = "https://i.pravatar.cc";
+    return this.http.post<Product>(this.apiUrl, product);
+  }
+
+  deleteProduct(id : number): Observable<Product>{
+    return this.http.delete<Product>(`${this.apiUrl}/${id}`);
+  }
+
+  updateProduct(id : number, product: { title: string, price: number, description: string, image: string, category: string }): Observable<Product>{
+    product.image = "https://i.pravatar.cc";
+    return this.http.put<Product>(`${this.apiUrl}/${id}`, product);
+  }
 }

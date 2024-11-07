@@ -1,0 +1,244 @@
+<div class="header-container">
+    <div style="display: flex; align-items: center;justify-content: space-between;">
+        <h2>Product List</h2> <!-- Title aligned to the left -->
+    
+        <mat-form-field style="width: 500px; margin-top: 10px; margin-left: 50px;">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyFilter($event)" placeholder="Enter your search here" #input>
+        </mat-form-field>
+    </div>  
+    <!-- Plus Button aligned to the right -->
+    <button 
+        class="btn btn-light me-3" mdbRipple rippleColor="dark"
+        type="button"
+        (click)="basicCollapse.toggle()"
+        [attr.aria-expanded]="!basicCollapse.collapsed"
+        aria-controls="collapseExample"
+          >Add new product <i class="fa fa-plus"></i>
+      </button>
+  </div>
+
+  <div id="collapseExample" mdbCollapse #basicCollapse="mdbCollapse" class="container">
+    <div class="row py-3">
+      <div class="col-md-12">
+          <h3>Add product</h3>
+      </div>
+    </div>
+  
+    <div >
+      <form #productAdd = "ngForm" class="row py-3" (ngSubmit) = "addProduct()">
+      <div class="col-md-6">
+        <div class="form-group" style="width: 30rem;">
+          <label for="fileInput">Choose an image</label>
+          <input type="file" id="fileInput" (change)="onFileChange($event)" class="form-control" name="image"/>
+          <div *ngIf="productAdd.submitted && !product.image" class="text-danger">
+            Image is required.
+          </div>
+        </div>
+      
+        <div *ngIf="product.image" class="mt-3">
+          <h5>Selected Image:</h5>
+          <img [src]="product.image" alt="Selected Image" style="max-width: 200px; max-height: 200px;" />
+        </div>
+      </div>
+      <div class="col-md-6">
+          <div style="width: 30rem;">
+          <div data-mdb-input-init class="form-floating mb-4">
+            <input type="text" id="addTitle" class="form-control form-control-lg" name = "title" [(ngModel)]="product.title" #title="ngModel" required/>
+            <label class="form-label" for="addTitle">Title</label>
+            <div *ngIf="title.invalid && (title.touched || productAdd.submitted)" class="text-danger">
+              Title is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <select id="addCate" class="form-select form-select-lg" name="category" [(ngModel)]="product.category" #category="ngModel"  required>
+              <option *ngFor="let option of categories" [value]="option">{{ option | titlecase }}</option>
+            </select>
+            <label class="form-label" for="addCate">Category</label>
+            <div *ngIf="category.invalid && (category.touched || productAdd.submitted)" class="text-danger">
+              Category is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <textarea id="addDescription" class="form-control form-control-lg textarea-auto-height" name = "description" rows="4" [(ngModel)]="product.description" #description="ngModel" required></textarea>
+            <label class="form-label" for="addDescription">Description</label>
+            <div *ngIf="description.invalid && (description.touched || productAdd.submitted)" class="text-danger">
+              Description is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <input type="number" id="addprice" class="form-control form-control-lg" name = "price" [(ngModel)]="product.price" #price="ngModel" min="0.01" required />
+            <label class="form-label" for="addprice">Price</label>
+            <div *ngIf="(price.invalid || product.price <= 0) && (price.touched || productAdd.submitted)" class="text-danger">
+              Price is required and must be greater than 0.
+            </div>
+          </div>
+        </div>
+        
+        </div>
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="productAdd.invalid || !product.image">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<div class="example-container mat-elevation-z8" style="width: 90%;" tabindex="0">
+  
+    <div class="example-table-container">
+  
+      <table mat-table [dataSource]="dataSource" class="example-table"
+             matSort matSortActive="id" matSortDisableClear matSortDirection="asc">
+        
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+          <td mat-cell *matCellDef="let row">{{row.price | currency}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+          <td mat-cell *matCellDef="let row">{{ row.rating?.rate ?? 0.0 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+          <td mat-cell *matCellDef="let row">{{row.title}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+          <td mat-cell *matCellDef="let row">{{row.category | titlecase}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="image">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Image</th>
+          <td mat-cell *matCellDef="let row">
+            <img [src]="row.image" alt="Product Image" width="100" height="100" />
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+            ID
+          </th>
+          <td mat-cell *matCellDef="let row">{{row.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <!-- Edit Button -->
+              <button mat-icon-button
+                      type="button"
+                      (click)="openCollapse(row)"
+                      [attr.aria-expanded]="!editCollapse.collapsed"
+                      aria-controls="collapseEdit">
+                <mat-icon>edit</mat-icon>
+              </button>
+          </ng-container>
+  
+          <ng-container matColumnDef="del">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <!-- Edit Button -->
+              <button mat-icon-button (click)="deleteProduct(row.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+          </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns, sticky: true" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+      </table>
+    </div>
+  
+    <mat-paginator [length]="resultsLength" 
+                   [pageSize]="10" 
+                   aria-label="Select page of GitHub search results"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+  <div id="collapseEdit" mdbCollapse #editCollapse="mdbCollapse" class="container">
+    <div class="row py-3">
+      <div class="col-md-12">
+          <h3>Edit product</h3>
+      </div>
+    </div>
+  
+    <div >
+      <form #productEdit = "ngForm" class="row py-3" (ngSubmit) = "editProductSubmit(editProduct.id)">
+      <div class="col-md-6">
+        <div class="form-group" style="width: 30rem;">
+          <label for="fileInputEdit">Choose an image</label>
+          <input type="file" id="fileInputEdit" (change)="onEditChange($event)" class="form-control" name="image"/>
+          <div *ngIf="productEdit.submitted && !editProduct.image" class="text-danger">
+            Image is required.
+          </div>
+        </div>
+      
+        <div *ngIf="editProduct.image" class="mt-3">
+          <h5>Image:</h5>
+          <img [src]="editProduct.image" alt="Selected Image" style="max-width: 200px; max-height: 200px;" />
+        </div>
+      </div>
+      <div class="col-md-6">
+          <div style="width: 30rem;">
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <input type="text" id="editId" class="form-control form-control-lg" name = "editId" [(ngModel)]="editProduct.id" required [disabled]="true"/>
+            <label class="form-label" for="editTitle">ID</label>
+          </div>
+            
+          <div data-mdb-input-init class="form-floating mb-4">
+            <input type="text" id="editTitle" class="form-control form-control-lg" name = "edittitle" [(ngModel)]="editProduct.title" #edittitle="ngModel" required/>
+            <label class="form-label" for="editTitle">Title</label>
+            <div *ngIf="edittitle.invalid && (productEdit.submitted)" class="text-danger">
+              Title is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <select id="editCate" class="form-select form-select-lg" name="editcategory" [(ngModel)]="editProduct.category" #editcategory="ngModel"  required>
+              <option *ngFor="let option of categories" [value]="option">{{ option | titlecase }}</option>
+            </select>
+            <label class="form-label" for="addCate">Category</label>
+            <div *ngIf="editcategory.invalid && (productEdit.submitted)" class="text-danger">
+              Category is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <textarea id="editDescription" class="form-control form-control-lg textarea-auto-height" name = "editdescription" rows="4" [(ngModel)]="editProduct.description" #editdescription="ngModel" required></textarea>
+            <label class="form-label" for="editDescription">Description</label>
+            <div *ngIf="editdescription.invalid && (productEdit.submitted)" class="text-danger">
+              Description is required.
+            </div>
+          </div>
+
+          <div data-mdb-input-init class="form-floating mb-4">
+            <input type="number" id="editprice" class="form-control form-control-lg" name = "editprice" [(ngModel)]="editProduct.price" #editprice="ngModel" min="0.01" required />
+            <label class="form-label" for="editprice">Price</label>
+            <div *ngIf="(editprice.invalid || editProduct.price <= 0) && (productEdit.submitted)" class="text-danger">
+              Price is required and must be greater than 0.
+            </div>
+          </div>
+        </div>
+        
+        </div>
+        <div class="col-12 text-center mt-3">
+          <button type="submit" class="btn btn-primary" [disabled]="productEdit.invalid || !editProduct.image">
+            Edit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>

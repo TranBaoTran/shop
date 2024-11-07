@@ -1,0 +1,83 @@
+/* Structure */
+.example-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-left: 80px;
+  }
+  
+  .example-table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .example-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-rate-limit-reached {
+    max-width: 360px;
+    text-align: center;
+  }
+  
+  /* Column Widths */
+  .mat-column-number,
+  .mat-column-state {
+    width: 64px;
+  }
+  
+  .mat-column-created {
+    width: 124px;
+  }
+  
+  .mat-cell, .mat-header-cell {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  
+  .mat-cell img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  .mat-row {
+    height: auto;
+  }
+  
+  /* Flex container for aligning items */
+  .header-container {
+    display: flex;
+    align-items: center;  /* Vertically align the items */
+    justify-content: space-between; /* Ensure space between elements */
+    padding: 16px;
+  }
+  
+  .textarea-auto-height {
+    height: auto !important;
+    min-height: calc(1.5em + 1rem + 2px); /* Minimum height similar to an input */
+    resize: vertical; /* Allow manual resize if needed */
+  }
+  
+  .form-floating > .textarea-auto-height {
+    padding-top: 1.5rem; /* Adjust padding for the floating label */
+    padding-bottom: 0.5rem;
+  }
+  
