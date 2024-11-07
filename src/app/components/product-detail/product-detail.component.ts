@@ -5,6 +5,7 @@ import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 
+
 @Component({
   selector: 'app-product-detail',
   standalone: true,
@@ -16,9 +17,12 @@ export class ProductDetailComponent {
   product: any;
   inputQuantity: number = 1;
 
+
   constructor(private route: ActivatedRoute, private productService : ProductService,
     private cartService: CartService
   ) {}
+
+  constructor(private route: ActivatedRoute, private productService : ProductService) {}
 
   ngOnInit(): void {
     this.getProduct();
@@ -31,6 +35,7 @@ export class ProductDetailComponent {
       }
     })
   } 
+
   addToCart(product: Product) {
       if (this.inputQuantity < 1) {
         // Kiểm tra số lượng không hợp lệ
