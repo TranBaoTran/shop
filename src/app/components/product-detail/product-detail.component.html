@@ -1,67 +1,27 @@
-<div class="product-detail-container">
-  <!-- Breadcrumb -->
-  <nav>
-    <span>Home</span> / <span>Shop</span> / <span>Shirts</span>
-  </nav>
+<section class="py-5">
+  <div class="container px-4 px-lg-5 my-5" >
+    <div class="row gx-4 gx-lg-5 align-items-center" ngIf="product">
+      <div class="col-md-6" >
+        <img class="card-img-top mb-5 mb-md-0" [src]="product.image" height="600" width="200">
+      </div>
+      <div class="col-md-6">
+        <div class="small mb-1">{{product.category}}</div>
+        <h3 class="display-5 fw-bolder">{{ product.title}}</h3>
+        <div class="fs-5 mb-5">
+          <!-- <span class="text-decoration-line-through">{{product.price + 20}</span> -->
+          <span>${{ product.price}}</span>
+        </div>
+        <p class="lead">{{ product.description}}</p>
+        <div class="d-flex">
 
-  <!-- Product Information -->
-  <div class="product-main">
-    <div class="product-image">
-      <img src="path_to_main_image.jpg" alt="Product Image">
-      <div class="thumbnail-images">
-        <img src="path_to_thumbnail1.jpg" alt="Thumbnail 1">
-        <img src="path_to_thumbnail2.jpg" alt="Thumbnail 2">
-        <img src="path_to_thumbnail3.jpg" alt="Thumbnail 3">
+          <input id="inputQuantity" class="form-control text-center me-3" type="number"  [(ngModel)]="inputQuantity" style="max-width: 3rem">
+          <button class="btn btn-outline-dark flex-shrink-0" type="button" (click)="addToCart(product)">
+
+            <i class="bi bi-cart-fill me-1"></i>
+            Add to cart
+          </button>
+        </div>
       </div>
     </div>
-    <div class="product-info">
-      <h2>Blue denim shirt</h2>
-      <span class="badge">New</span>
-      <span class="badge sale">-10%</span>
-      <p class="price"><span class="old-price">$85.00</span> $75.00</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <ul>
-        <li>Model: SKU 540276</li>
-        <li>Color: Blue</li>
-        <li>Delivery: USA, Europe</li>
-      </ul>
-      <div class="size-selection">
-        <label>Size:</label>
-        <input type="radio" name="size" value="small"> Small
-        <input type="radio" name="size" value="medium"> Medium
-        <input type="radio" name="size" value="large"> Large
-      </div>
-      <button>Add to Cart</button>
-      <button>Buy Now</button>
-    </div>
   </div>
-
-  <!-- Product Tabs -->
-  <div class="product-tabs">
-    <button>Description</button>
-    <button>Details</button>
-    <button>Reviews</button>
-  </div>
-
-  <!-- Reviews Section -->
-  <div class="reviews">
-    <h3>2 reviews for Blue denim shirt</h3>
-    <div class="review">
-      <h4>Alan Turing</h4>
-      <p>⭐⭐⭐⭐⭐</p>
-      <p>Lorem ipsum dolor sit amet...</p>
-    </div>
-    <div class="review">
-      <h4>Veronica Smith</h4>
-      <p>⭐⭐⭐⭐</p>
-      <p>Lorem ipsum dolor sit amet...</p>
-    </div>
-    <div class="review-form">
-      <h3>Rate this product</h3>
-      <input type="text" placeholder="Name">
-      <input type="email" placeholder="Email">
-      <textarea placeholder="Your review"></textarea>
-      <button>Submit</button>
-    </div>
-  </div>
-</div>
+</section>

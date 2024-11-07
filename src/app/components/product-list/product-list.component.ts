@@ -4,6 +4,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Product } from '../../models/product.model';
 import { ProductService } from '../../services/product.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
@@ -40,8 +41,11 @@ import { ProductService } from '../../services/product.service';
 export class ProductListComponent implements OnInit{
   products: undefined | Product[];
   Math = Math;
+  
 
-  constructor(private productService: ProductService, private activeRoute: ActivatedRoute, private router: Router) {}
+  constructor(private productService: ProductService, private activeRoute: ActivatedRoute, private router: Router,
+              private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
@@ -66,8 +70,18 @@ export class ProductListComponent implements OnInit{
     }
   }
 
-  goToProductDetail(product: any) {
-    this.router.navigate(['/product-detail', product.id], { state: { product } });
+  goToProductDetail(id : number): void {
+    this.router.navigate(['/product-detail', id]);
   }
   
+  addToCart(product: Product) {
+    this.cartService.addToCart({ 
+      productId: product.id, 
+      title: product.title, 
+      price: product.price, 
+      image: product.image,
+      quantity: 1 
+    });
+    console.log(product)
+  }
 }
