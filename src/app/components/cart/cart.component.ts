@@ -4,17 +4,19 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 import { CartService } from '../../services/cart.service';
 import { Observable } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, FormsModule,HeaderComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit{
   cartItems: CartItem[] = [];
   totalAmount$: Observable<number>;  
+  inputQuantity: number = 1;
 
   constructor(private cartService: CartService) {
     this.totalAmount$ = this.cartService.totalAmount$;
@@ -45,5 +47,10 @@ export class CartComponent implements OnInit{
     this.totalAmount$.subscribe(totalAmount => {
       alert('Proceeding to checkout with total amount: ' + totalAmount);
     });
+  }
+
+  clearCart(): void {
+    this.cartService.clearCart(); 
+    this.cartItems = this.cartService.getCartItems();
   }
 }

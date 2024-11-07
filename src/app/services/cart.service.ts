@@ -56,6 +56,11 @@ export class CartService {
     this.updateCartState();
   }
 
+  clearCart(): void {
+    this.cartItems = [];
+    this.updateCartState();
+  }
+
   private saveCartToLocalStorage(): void {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }

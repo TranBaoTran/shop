@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="cart-container">
+<div class="cart-container" style="margin-top: 50px;">
     <h2>Your Shopping Cart</h2>
   
     <div *ngIf="cartItems.length === 0">
@@ -27,7 +27,7 @@
             <td>
               <div class="quantity-container">
                 <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
-                <span>{{ item.quantity }}</span>
+                <input id="inputQuantity" class="form-control text-center" [(ngModel)]="item.quantity" style="max-width: 3rem" [min]="1">
                 <button class="btn btn-sm btn-primary" (click)="increaseQuantity(item)">+</button>
               </div>
             </td>
@@ -42,7 +42,8 @@
   
       <div class="cart-summary">
         <p>Total Amount: {{ totalAmount$ | async | currency }}</p>
-        <button (click)="checkout()" style="background-color: #007bff; color:white; border-color:#007bff; border-radius:5px">Checkout</button>
+        <button (click)="clearCart()" class="btn btn-lg btn-secondary" >Clear</button>
+        <button (click)="checkout()" class="btn btn-lg" style="background-color: #007bff; color:white; border-color:#007bff; border-radius:5px">Checkout</button>
       </div>
     </div>
   </div>
