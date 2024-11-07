@@ -5,7 +5,6 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { CartComponent } from './components/cart/cart.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 
 export const routes: Routes = [
     {   path: '', 

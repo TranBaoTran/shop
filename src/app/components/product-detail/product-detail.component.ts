@@ -22,7 +22,6 @@ export class ProductDetailComponent {
     private cartService: CartService
   ) {}
 
-  constructor(private route: ActivatedRoute, private productService : ProductService) {}
 
   ngOnInit(): void {
     this.getProduct();
