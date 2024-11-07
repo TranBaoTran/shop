@@ -25,14 +25,14 @@
             </td>
             <td>{{ item.title }}</td>
             <td>
-              <button (click)="decreaseQuantity(item)">-</button>
+              <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
               {{ item.quantity }}
-              <button (click)="increaseQuantity(item)">+</button>
+              <button class="btn btn-sm btn-primary"  (click)="increaseQuantity(item)">+</button>
             </td>
             <td>{{ item.price | currency }}</td>
             <td>{{ item.price * item.quantity | currency }}</td>
             <td>
-              <button (click)="removeFromCart(item)">Remove</button>
+              <button class="btn btn-sm btn-danger"  (click)="removeFromCart(item)" >Remove</button>
             </td>
           </tr>
         </tbody>
@@ -40,7 +40,7 @@
   
       <div class="cart-summary">
         <p>Total Amount: {{ totalAmount$ | async | currency }}</p>
-        <button (click)="checkout()">Checkout</button>
+        <button (click)="checkout()" style="background-color: #007bff; color:white">Checkout</button>
       </div>
     </div>
   </div>
