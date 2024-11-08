@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -25,15 +25,13 @@ export class AdminComponent {
   @ViewChild('sidenav') sidenav !: MatSidenav;
   isCollapsed = false;
   isMobile = false;
-  currentUrl : string = ""
 
-  constructor(private observer: BreakpointObserver, private router : Router) {}
+  constructor(private observer: BreakpointObserver) {}
 
   ngOnInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((screenSize) => {
       this.isMobile = screenSize.matches;
     });
-    this.currentUrl = this.router.url;
   }
 
   toggleMenu() {

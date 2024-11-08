@@ -26,4 +26,8 @@ export class UserService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  getAll(): Observable<User[]>{
+    return this.http.get<User[]>(this.apiUrl);
+  }
 }
