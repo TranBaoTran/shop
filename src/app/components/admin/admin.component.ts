@@ -41,4 +41,11 @@ export class AdminComponent {
       this.isCollapsed = !this.isCollapsed;
     }
   }
+
+  logOut(): void{
+    localStorage.removeItem('token');
+    localStorage.removeItem('userid');
+    localStorage.removeItem('cart');
+    window.location.reload();
+  }
 }

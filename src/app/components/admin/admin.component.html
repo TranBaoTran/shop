@@ -26,6 +26,16 @@
           <span *ngIf="!isCollapsed">Cart</span>
         </span>
       </a>
+
+      <div class="spacer"></div>
+
+    <!-- Logout Button -->
+    <a mat-list-item (click)="logOut()">
+      <span class="entry">
+        <mat-icon>logout</mat-icon>
+        <span *ngIf="!isCollapsed">Logout</span>
+      </span>
+    </a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content color="warn">
