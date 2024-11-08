@@ -10,6 +10,7 @@ import { authGuard } from './guards/auth.guard';
 import { AdminProductComponent } from './components/admin-product/admin-product.component';
 import { AdminUserComponent } from './components/admin-user/admin-user.component';
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { AdminCartComponent } from './components/admin-cart/admin-cart.component';
 
 export const routes: Routes = [
     {   path: '', 
@@ -28,7 +29,8 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             { path: 'product', component: AdminProductComponent},
-            { path: 'user', component: AdminUserComponent}
+            { path: 'user', component: AdminUserComponent},
+            { path: 'cart', component: AdminCartComponent}
         ]}
 ];
 

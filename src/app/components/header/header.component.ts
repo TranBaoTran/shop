@@ -49,6 +49,7 @@ export class HeaderComponent implements OnInit {
   logOut(){
     localStorage.removeItem('token');
     localStorage.removeItem('userid');
+    localStorage.removeItem('cart');
     window.location.reload();
   }
 
