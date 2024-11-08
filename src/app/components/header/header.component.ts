@@ -24,10 +24,13 @@ export class HeaderComponent implements OnInit {
   cartItems: CartItem[] = [];
   totalItems$: Observable<number>;
 
+  // userId: string | null = '';
+
   constructor(
     private productService: ProductService,
     private userService: UserService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router: Router
   ) {this.totalItems$ = this.cartService.totalItems$;}
 
   ngOnInit(): void {
@@ -48,4 +51,18 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('userid');
     window.location.reload();
   }
+
+  goToAdminProfile(){
+    this.router.navigate(['/admin-profile']);
+  }
+
+  // goToAdminProfile(): void {
+  //   const userId = localStorage.getItem('userid');
+  //   if (userId) {
+  //       this.router.navigate(['/admin-profile', userId]);
+  //   } else {
+  //       //console.error("User ID not found in localStorage");
+  //       window.alert("Change Error");
+  //   }
+  // }
 }

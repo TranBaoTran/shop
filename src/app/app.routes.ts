@@ -9,6 +9,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { authGuard } from './guards/auth.guard';
 import { AdminProductComponent } from './components/admin-product/admin-product.component';
 import { AdminUserComponent } from './components/admin-user/admin-user.component';
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 
 export const routes: Routes = [
     {   path: '', 
@@ -21,6 +22,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent},
     { path: 'signup', component: SignupComponent},
     { path: 'cart', component: CartComponent },
+    { path: 'admin-profile', component: AdminProfileComponent },
     {   path: 'admin', 
         component: AdminComponent, 
         canActivate: [authGuard],
