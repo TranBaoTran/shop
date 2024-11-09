@@ -62,7 +62,11 @@
           <!-- danh sách cart -->
           <div class="cart-items-dropdown">
             <div class="cart-title">Recently Added Products</div>
-            <ul *ngFor="let item of cartItems">
+            <div *ngIf="(cartItems$ | async)?.length === 0" class="no-products-message">
+              <img src="https://img.icons8.com/ios/50/000000/shopping-cart.png" alt="Empty Cart" class="cart-icon" />
+              <p>No Products Yet</p>
+            </div>
+            <ul *ngFor="let item of (cartItems$ | async)">
               <li class="cart-item">
                 <img [src]="item.image" alt="Product Image" width="30" height="30">
                 <span>{{ item.title }}</span>

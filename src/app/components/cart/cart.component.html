@@ -1,50 +1,49 @@
 <app-header></app-header>
-<div class="cart-container" style="margin-top: 50px;">
-    <h2>Your Shopping Cart</h2>
-  
-    <div *ngIf="cartItems.length === 0">
-      <p>Cart is empty.</p>
-    </div>
-  
-    <div *ngIf="cartItems.length > 0">
-      <table>
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Product</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of cartItems">
-            <td>
-              <img [src]="item.image" alt="{{ item.title }}" class="product-image" />
-            </td>
-            <td>{{ item.title }}</td>
-            <td>
-              <div class="quantity-container">
-                <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
-                <input id="inputQuantity" class="form-control text-center" [(ngModel)]="item.quantity" style="max-width: 3rem" [min]="1">
-                <button class="btn btn-sm btn-primary" (click)="increaseQuantity(item)">+</button>
-              </div>
-            </td>
-            <td>{{ item.price | currency }}</td>
-            <td>{{ item.price * item.quantity | currency }}</td>
-            <td>
-              <button class="btn btn-sm btn-danger"  (click)="removeFromCart(item)" >Remove</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <div class="cart-summary">
-        <p>Total Amount: {{ totalAmount$ | async | currency }}</p>
-        <button (click)="clearCart()" class="btn btn-lg btn-secondary" >Clear</button>
-        <button (click)="checkout()" class="btn btn-lg" style="background-color: #007bff; color:white; border-color:#007bff; border-radius:5px">Checkout</button>
-      </div>
+<div class="cart-container" style="margin-top: 50px;" *ngIf="cartItems$ | async as cartItems">
+  <h2>Your Shopping Cart</h2>
+
+  <div *ngIf="cartItems && cartItems.length === 0">
+    <p>Cart is empty.</p>
+  </div>
+
+  <div *ngIf="cartItems && cartItems.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems">
+          <td>
+            <img [src]="item.image" alt="{{ item.title }}" class="product-image" />
+          </td>
+          <td>{{ item.title }}</td>
+          <td>
+            <div class="quantity-container">
+              <button class="btn btn-sm btn-primary" (click)="decreaseQuantity(item)">-</button>
+              <input id="inputQuantity" class="form-control text-center" [(ngModel)]="item.quantity" style="max-width: 3rem" [min]="1">
+              <button class="btn btn-sm btn-primary" (click)="increaseQuantity(item)">+</button>
+            </div>
+          </td>
+          <td>{{ item.price | currency }}</td>
+          <td>{{ item.price * item.quantity | currency }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger"  (click)="removeFromCart(item)" >Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="cart-summary">
+      <p>Total Amount: {{ totalAmount$ | async | currency }}</p>
+      <button (click)="clearCart()" class="btn btn-lg btn-secondary" >Clear</button>
+      <button (click)="checkout()" class="btn btn-lg" style="background-color: #007bff; color:white; border-color:#007bff; border-radius:5px">Checkout</button>
     </div>
   </div>
-  
+</div>

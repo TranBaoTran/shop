@@ -1,6 +1,6 @@
 <section class="py-5">
   <div class="container px-4 px-lg-5 my-5" >
-    <div class="row gx-4 gx-lg-5 align-items-center" ngIf="product">
+    <div class="row gx-4 gx-lg-5 align-items-center" *ngIf="product">
       <div class="col-md-6" >
         <img class="card-img-top mb-5 mb-md-0" [src]="product.image" height="600" width="200">
       </div>
@@ -13,9 +13,8 @@
         </div>
         <p class="lead">{{ product.description}}</p>
         <div class="d-flex">
-
           <input id="inputQuantity" class="form-control text-center me-3" type="number"  [(ngModel)]="inputQuantity" style="max-width: 3rem">
-          <button class="btn btn-outline-dark flex-shrink-0" type="button" (click)="addToCart(product)">
+          <button class="btn btn-outline-dark flex-shrink-0" type="button" (click)="addCart(product, currentUserId)">
 
             <i class="bi bi-cart-fill me-1"></i>
             Add to cart
