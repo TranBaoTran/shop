@@ -92,8 +92,9 @@ export class ProductListComponent implements OnInit{
   addCart(product: Product, userId: number | null) : void {
     if (this.currentUserId !== null) {
       this.cartService.addCart({
+        id: this.currentUserId,
         productId: product.id,
-        date: new Date().toString(),
+        date: Date.now.toString(),
         quantity: 1,
         userId: this.currentUserId 
       }).subscribe(() => {
