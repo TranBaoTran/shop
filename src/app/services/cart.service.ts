@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject, map, Observable, of } from 'rxjs';
+
 import { Cart, CartItem } from '../models/product.model';
 import { ProductService } from './product.service';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +20,7 @@ export class CartService {
   totalItems$ = this.totalItemsSubject.asObservable();
 
   private apiUrl = 'https://fakestoreapi.com/carts';
+
 
   constructor(private http: HttpClient, private productService: ProductService) {
     this.loadCartFromLocalStorage();
