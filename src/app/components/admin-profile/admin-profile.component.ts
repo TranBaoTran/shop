@@ -2,22 +2,44 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-profile',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './admin-profile.component.html',
   styleUrl: './admin-profile.component.css'
 })
 export class AdminProfileComponent implements OnInit{
 
-  user: User | null = null;
+  user : User = {
+    address: {
+      geolocation: {
+        lat: "-37.3159",
+        long: "81.1496"
+      },
+      city: "kilcoole",
+      street: "new road",
+      number: 7682,
+      zipcode: "12926-3874"
+    },
+    id: 0,
+    email: '',
+    username: '',
+    password: '',
+    name: {
+      firstname: '',
+      lastname: ''
+    },
+    phone: ''
+  };
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    const userId = localStorage.getItem('userid');
+    const storedUserId = localStorage.getItem('userid');
+    const userId = storedUserId ? Number(storedUserId) : null;
     if (userId) {
       this.userService.getUserById(userId).subscribe((data: User) => {
         this.user = data;
@@ -27,26 +49,10 @@ export class AdminProfileComponent implements OnInit{
     }
   }
 
-  onSave(Profile: User): void {
-    const userId = localStorage.getItem('userid');
-    const username = Profile.username;
-    const email = Profile.email;
-    const password = Profile.password;
-    const address = Profile.address;
-    const phone = Profile.phone;
-    if (userId) {
-      this.userService.getUserById(userId).subscribe((data: User) => {
-        window.alert("Change Success");
-      });
-    } else {
-      window.alert("Change Error !!!");
-    }
-  }
-
-  updateUser(userData: any): void {
+  updateUserInfo(): void{
     if(window.confirm('Are you sure you want to edit this information ?')){
-      this.userService.updateUser(userData).subscribe(data => {
-        if (data && data.success) {
+      this.userService.updateUserData(this.user).subscribe(data => {
+        if (data) {
           window.alert("Change Success");
         } else {
           window.alert("Change Error !!!");
@@ -54,6 +60,5 @@ export class AdminProfileComponent implements OnInit{
       });
     }   
   }
-
 
 }

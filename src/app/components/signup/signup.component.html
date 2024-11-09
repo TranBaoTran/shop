@@ -47,7 +47,7 @@
                   </div>
   
                   <div data-mdb-input-init class="form-floating mb-4">
-                    <input type="tel" id="form3Example6" class="form-control" name = "phone" [(ngModel)] = "user.phone" #phone = "ngModel" pattern="^\+?[0-9]{9,15}$" required />
+                    <input type="tel" id="form3Example6" class="form-control" name = "phone" [(ngModel)] = "user.phone" #phone = "ngModel" pattern="^\+?[0-9]{10,15}$|^\+?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{4}$" required />
                     <label class="form-label active" for="form3Example6">Phone</label>
                     <div *ngIf="phone.errors?.['required'] && (phone.touched || userSignUp.submitted)" class="text-danger">
                       Phone is required.

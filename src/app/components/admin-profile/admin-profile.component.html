@@ -2,61 +2,65 @@
   <h1 class="text-primary">Edit Profile</h1>
     <hr>
 <div class="row">
-    <!-- left column -->
-    <!-- <div class="col-md-3">
-      <div class="text-center">
-        <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="avatar img-circle img-thumbnail" alt="avatar">
-        <br>
-        <h6>{{user?.name?.firstname}} {{user?.name?.lastname}}</h6>
-        
-        <input type="file" class="form-control">
-      </div>
-    </div> -->
     
-    <!-- edit form column -->
     <div class="col-md-7 personal-info content">
-      <!-- <div class="alert alert-info alert-dismissable">
-        <a class="panel-close close" data-dismiss="alert">×</a> 
-        <i class="fa fa-coffee"></i>
-        This is an <strong>.alert</strong>. Use this to show important messages to the user.
-      </div> -->
       <h3>Personal info</h3>
       
-      <form class="form-horizontal" role="form" ngIf="user" #userProfile = "ngForm" (ngSubmit)="updateUser(userProfile.value)">
+      <form class="form-horizontal" role="form" #userProfile = "ngForm" (ngSubmit)="updateUserInfo()">
         <div class="form-group">
           <label class="col-lg-3 control-label">First name: </label>
           <div class="col-lg-8">
-            <input class="form-control" type="text" value="{{user?.name?.firstname}}" ngModel>
+            <input class="form-control" type="text" name = "firstname" [(ngModel)] = "user.name.firstname" #firstname = "ngModel" pattern="^[a-zA-Z ]*$" required>
+            <div *ngIf="firstname.errors?.['required'] && (userProfile.submitted)" class="text-danger">
+              Firstname is required.
+            </div>
+            <div *ngIf="firstname.errors?.['pattern'] && (userProfile.submitted)" class="text-danger">
+              Firstname can't contain number.
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Last name:</label>
           <div class="col-lg-8">
-            <input class="form-control" type="text" value="{{user?.name?.lastname}}" ngModel>
+            <input class="form-control" type="text" name = "lastname" [(ngModel)] = "user.name.lastname" #lastname = "ngModel" pattern="^[a-zA-Z ]*$" required>
+            <div *ngIf="lastname.errors?.['required'] && (userProfile.submitted)" class="text-danger">
+              Lastname is required.
+            </div>
+            <div *ngIf="lastname.errors?.['pattern'] && (userProfile.submitted)" class="text-danger">
+              Lastname can't contain number.
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Phone:</label>
           <div class="col-lg-8">
-            <input class="form-control" type="text" value="{{user?.phone}}" ngModel>
+            <input class="form-control" type="text" name = "phone" [(ngModel)] = "user.phone" #phone = "ngModel" pattern="^\+?[0-9]{10,15}$|^\+?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{1,4}[-\s]?[0-9]{4}$" required>
+            <div *ngIf="phone.errors?.['required'] && (userProfile.submitted)" class="text-danger">
+              Phone is required.
+            </div>
+            <div *ngIf="phone.errors?.['pattern'] && (userProfile.submitted)" class="text-danger">
+              Please enter a valid phone number.
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label">Email:</label>
           <div class="col-lg-8">
-            <input class="form-control" type="text" value="{{user?.email}}" ngModel>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="col-lg-3 control-label">Address:</label>
-          <div class="col-lg-8">
-            <input class="form-control" type="text" value="{{user?.address}}" ngModel>  
+            <input class="form-control" type="text" name = "email" [(ngModel)] = "user.email" #email = "ngModel" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required>
+            <div *ngIf="email.errors?.['required'] && (userProfile.submitted)" class="text-danger">
+              Email is required.
+            </div>
+            <div *ngIf="email.errors?.['pattern'] && (userProfile.submitted)" class="text-danger">
+              Please enter a valid email.
+            </div>
           </div>
         </div>
         <div class="form-group">
           <label class="col-lg-3 control-label"></label>
           <div class="col-lg-8">
-            <input class="form-control alert-info" type="submit" value="Save">  
+            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" [disabled]="userProfile.invalid">
+              Save
+            </button> 
           </div>
         </div>
       </form>

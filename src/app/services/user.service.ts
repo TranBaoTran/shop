@@ -37,7 +37,7 @@ export class UserService {
   }
 
   // Hàm lấy thông tin người dùng theo ID
-  getUserById(id: string): Observable<User> {
+  getUserById(id: number): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
@@ -49,12 +49,8 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`); 
   }
 
-  updateUserData(id : number): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, id); 
-  }
-
-  updateUser(userData: any): Observable<any> {
-    return this.http.put<any>(this.apiUrl, userData);
+  updateUserData(user : User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/${user.id}`, user); 
   }
   
 }
