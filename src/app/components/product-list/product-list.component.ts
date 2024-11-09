@@ -54,7 +54,8 @@ export class ProductListComponent implements OnInit{
     this.activeRoute.paramMap.subscribe(params => {
       this.getProductList();
     });
-    this.currentUserId = Number(localStorage.getItem('userid'));
+    const storedUserId = localStorage.getItem('userid');
+    this.currentUserId = storedUserId ? Number(storedUserId) : null;
   }
 
   getProductList(){
@@ -79,7 +80,7 @@ export class ProductListComponent implements OnInit{
   }
   
   addCart(product: Product, userId: number | null) : void {
-    if (this.currentUserId !== null) {
+    if (this.currentUserId != null) {
       this.cartService.addCart({
         id: this.currentUserId,
         productId: product.id,
@@ -90,7 +91,7 @@ export class ProductListComponent implements OnInit{
         console.log('Product added to User cart:', product);
       });
     } else {
-      alert('Please log in to add items to the cart.');
+      window.alert('Please log in to add items to the cart.');
     }
   }
 }

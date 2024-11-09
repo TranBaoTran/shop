@@ -48,10 +48,11 @@ export class CartComponent implements OnInit {
 
   checkout(): void {
     this.cartService.getUserCart(Number(this.currentUserId)).subscribe(cart => {
-      console.log('Cart from API:', cart);  
-      alert('Thanh toán thành công!');
-      this.clearCart();
-      this.router.navigate(['']);
+      if(cart){
+        console.log('Cart from API:', cart);  
+        alert('Add cart successfully!');
+        this.clearCart();
+      }
     });
   }
 
