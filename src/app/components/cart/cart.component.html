@@ -1,12 +1,12 @@
 <app-header></app-header>
-<div class="cart-container" style="margin-top: 50px;">
+<div class="cart-container" style="margin-top: 50px;" *ngIf="cartItems$ | async as cartItems">
     <h2>Your Shopping Cart</h2>
   
-    <div *ngIf="cartItems.length === 0">
+    <div *ngIf="cartItems && cartItems.length === 0">
       <p>Cart is empty.</p>
     </div>
   
-    <div *ngIf="cartItems.length > 0">
+    <div *ngIf="cartItems && cartItems.length > 0">
       <table>
         <thead>
           <tr>

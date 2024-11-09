@@ -62,7 +62,7 @@
           <!-- danh sách cart -->
           <div class="cart-items-dropdown">
             <div class="cart-title">Recently Added Products</div>
-            <ul *ngFor="let item of cartItems">
+            <ul *ngFor="let item of (cartItems$ | async)">
               <li class="cart-item">
                 <img [src]="item.image" alt="Product Image" width="30" height="30">
                 <span>{{ item.title }}</span>

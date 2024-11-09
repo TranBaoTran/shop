@@ -10,11 +10,12 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class CartService {
-  cartItems: CartItem[] = []; // CartItem bao gồm tất cả chi tiết sản phẩm
+  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   private totalAmountSubject = new BehaviorSubject<number>(0);
   private totalItemsSubject = new BehaviorSubject<number>(0);
   private cartSubject = new BehaviorSubject<Cart[]>([]); // Chỉ chứa Cart (giỏ hàng)
-
+  
+  cartItems$ = this.cartItemsSubject.asObservable();
   cart$ = this.cartSubject.asObservable();
   totalAmount$ = this.totalAmountSubject.asObservable();
   totalItems$ = this.totalItemsSubject.asObservable();
@@ -55,16 +56,13 @@ export class CartService {
           ]
         };
   
-        // Gọi API để lưu giỏ hàng vào hệ thống (server)
         this.http.post<Cart>(this.apiUrl, newCart).subscribe(response => {
           console.log('Cart saved to API:', response);
-  
-          // Sau khi lưu vào API, có thể gọi lại phương thức để cập nhật trạng thái giỏ hàng cục bộ
           this.updateCartState(); // Cập nhật giỏ hàng cục bộ
         });
   
         // Lưu giỏ hàng vào localStorage
-        this.saveCartItemToLocalStorage(); // Lưu CartItem[] vào localStorage
+        this.saveCartItemToLocalStorage();
         return newCart; 
       })
     );
@@ -73,23 +71,25 @@ export class CartService {
 
   // Thêm sản phẩm vào giỏ hàng
   addToCart(item: CartItem): void {
-    const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
+    let currentCartItems  = this.cartItemsSubject.getValue();
+    const existingItem = currentCartItems .find(cartItem => cartItem.productId === item.productId);
     if (existingItem) {
       existingItem.quantity += item.quantity; // Cập nhật số lượng nếu sản phẩm đã tồn tại
     } else {
-      this.cartItems.push(item); // Thêm mới item vào giỏ hàng
+      currentCartItems .push(item); // Thêm mới item vào giỏ hàng
     }
     this.updateCartState();
   }
 
-  getCartItems(): CartItem[] {
-    return this.cartItems;
+  getCartItems(): Observable<CartItem[]> {
+    return this.cartItems$;
   }
 
   // Cập nhật trạng thái giỏ hàng (giỏ hàng là Cart[], không phải CartItem[])
   private updateCartState(): void {
-    const totalAmount = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const totalQuantity = this.cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const currentCartItems = this.cartItemsSubject.getValue();
+    const totalAmount = currentCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalQuantity = currentCartItems.reduce((sum, item) => sum + item.quantity, 0);
 
     // Phát giá trị cho tổng tiền và tổng số lượng
     this.totalAmountSubject.next(totalAmount);
@@ -103,7 +103,7 @@ export class CartService {
         id:Number(userId),
         userId: Number(userId),
         date: Date.now.toString(),
-        products: this.cartItems.map(item => ({ productId: item.productId, quantity: item.quantity })) // Danh sách sản phẩm trong giỏ hàng
+        products: currentCartItems.map(item => ({ productId: item.productId, quantity: item.quantity })) // Danh sách sản phẩm trong giỏ hàng
       }
     ];
     this.cartSubject.next(cartState);
@@ -114,7 +114,7 @@ export class CartService {
 
   // Lưu giỏ hàng vào localStorage
   private saveCartItemToLocalStorage(): void {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems)); // Lưu CartItem[]
+    localStorage.setItem('cart', JSON.stringify(this.cartItemsSubject.getValue())); // Lưu CartItem[]
     localStorage.setItem('totalAmount', JSON.stringify(this.totalAmountSubject.value)); // Lưu tổng tiền
     localStorage.setItem('totalItems', JSON.stringify(this.totalItemsSubject.value)); // Lưu tổng số lượng
   }
@@ -123,14 +123,15 @@ export class CartService {
   private loadCartFromLocalStorage(): void {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
-      this.cartItems = JSON.parse(savedCart);
+      this.cartItemsSubject.next(JSON.parse(savedCart));
       this.updateCartState(); // Cập nhật lại trạng thái giỏ hàng
     }
   }
 
   // Cập nhật số lượng sản phẩm trong giỏ hàng
   updateQuantity(productId: number, quantity: number) {
-    const item = this.cartItems.find(cartItem => cartItem.productId === productId);
+    const currentCartItems = this.cartItemsSubject.getValue();
+    const item = currentCartItems.find(cartItem => cartItem.productId === productId);
     if (item) {
       item.quantity = quantity;
       this.updateCartState();
@@ -139,13 +140,14 @@ export class CartService {
 
   // Xóa sản phẩm khỏi giỏ hàng
   removeFromCart(productId: number) {
-    this.cartItems = this.cartItems.filter(item => item.productId !== productId);
+    const updatedCartItems = this.cartItemsSubject.getValue().filter(item => item.productId !== productId);
+    this.cartItemsSubject.next(updatedCartItems);
     this.updateCartState();
   }
 
   // Xóa tất cả sản phẩm khỏi giỏ hàng
   clearCart(): void {
-    this.cartItems = [];
+    this.cartItemsSubject.next([]);
     this.updateCartState();
   }
 
