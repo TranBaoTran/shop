@@ -17,47 +17,74 @@
           <div class="col-lg-6 mb-5 mb-lg-0">
             <div class="card">
               <div class="card-body py-5 px-md-5">
-                <form #userSignUp = "ngForm" (ngSubmit) = "signUp(userSignUp.value)">
-                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                <form #userSignUp = "ngForm" (ngSubmit) = "signUpUser()">
+    
                   <div class="row">
                     <div class="col-md-6 mb-4">
                       <div data-mdb-input-init class="form-floating">
-                        <input type="text" id="form3Example1" class="form-control" name = "firstname" ngModel/>
+                        <input type="text" id="form3Example1" class="form-control" name = "firstname" [(ngModel)] = "user.name.firstname" #firstname = "ngModel" pattern="^[a-zA-Z ]*$" required/>
                         <label class="form-label active" for="form3Example1">First name</label>
+                        <div *ngIf="firstname.errors?.['required'] && (firstname.touched || userSignUp.submitted)" class="text-danger">
+                          Firstname is required.
+                        </div>
+                        <div *ngIf="firstname.errors?.['pattern'] && (firstname.touched || userSignUp.submitted)" class="text-danger">
+                          Firstname can't contain number.
+                        </div>
                       </div>
                     </div>
                     <div class="col-md-6 mb-4">
                       <div data-mdb-input-init class="form-floating">
-                        <input type="text" id="form3Example2" class="form-control" name = "lastname" ngModel/>
+                        <input type="text" id="form3Example2" class="form-control" name = "lastname" [(ngModel)] = "user.name.lastname" #lastname = "ngModel" pattern="^[a-zA-Z ]*$" required/>
                         <label class="form-label active" for="form3Example2">Last name</label>
+                        <div *ngIf="lastname.errors?.['required'] && (lastname.touched || userSignUp.submitted)" class="text-danger">
+                          Lastname is required.
+                        </div>
+                        <div *ngIf="lastname.errors?.['pattern'] && (lastname.touched || userSignUp.submitted)" class="text-danger">
+                          Lastname can't contain number.
+                        </div>
                       </div>
                     </div>
                   </div>
   
                   <div data-mdb-input-init class="form-floating mb-4">
-                    <input type="tel" id="form3Example6" class="form-control" name = "phone" ngModel/>
+                    <input type="tel" id="form3Example6" class="form-control" name = "phone" [(ngModel)] = "user.phone" #phone = "ngModel" pattern="^\+?[0-9]{9,15}$" required />
                     <label class="form-label active" for="form3Example6">Phone</label>
+                    <div *ngIf="phone.errors?.['required'] && (phone.touched || userSignUp.submitted)" class="text-danger">
+                      Phone is required.
+                    </div>
+                    <div *ngIf="phone.errors?.['pattern'] && (phone.touched || userSignUp.submitted)" class="text-danger">
+                      Please enter a valid phone number.
+                    </div>
                   </div>
 
-                  <!-- Email input -->
                   <div data-mdb-input-init class="form-floating mb-4">
-                    <input type="email" id="form3Example3" class="form-control" name = "email" ngModel/>
+                    <input type="email" id="form3Example3" class="form-control" name = "email" [(ngModel)] = "user.email" #email = "ngModel" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required/>
                     <label class="form-label active" for="form3Example3">Email address</label>
+                    <div *ngIf="email.errors?.['required'] && (email.touched || userSignUp.submitted)" class="text-danger">
+                      Email is required.
+                    </div>
+                    <div *ngIf="email.errors?.['pattern'] && (email.touched || userSignUp.submitted)" class="text-danger">
+                      Please enter a valid email.
+                    </div>
                   </div>
 
                   <div data-mdb-input-init class="form-floating mb-4">
-                    <input type="text" id="form3Example4" class="form-control" name = "username" ngModel/>
+                    <input type="text" id="form3Example4" class="form-control" name = "username" [(ngModel)] = "user.username" #username = "ngModel" required/>
                     <label class="form-label active" for="form3Example4">User name</label>
+                    <div *ngIf="username.errors?.['required'] && (username.touched || userSignUp.submitted)" class="text-danger">
+                      Username is required.
+                    </div>
                   </div>
   
-                  <!-- Password input -->
                   <div data-mdb-input-init class="form-floating mb-4">
-                    <input type="password" id="form3Example5" class="form-control" name = "password" ngModel/>
+                    <input type="password" id="form3Example5" class="form-control" name = "password" [(ngModel)] = "user.password" #password = "ngModel" required/>
                     <label class="form-label active" for="form3Example5">Password</label>
+                    <div *ngIf="password.errors?.['required'] && (password.touched || userSignUp.submitted)" class="text-danger">
+                      Password is required.
+                    </div>
                   </div>
   
-                  <!-- Submit button -->
-                  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4" [disabled]="userSignUp.invalid">
                     Sign up
                   </button>
 

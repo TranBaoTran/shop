@@ -4,16 +4,21 @@ import { Login, LoginResponse } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { Router, RouterModule } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit{
+  login : Login = {
+    username : '',
+    password : ''
+  }
 
   constructor(private userService : UserService, private router: Router) {}
 
@@ -21,8 +26,8 @@ export class LoginComponent implements OnInit{
     
   }
 
-  logIn(logIn : Login): void{
-    this.userService.userLogIn(logIn).subscribe((data : LoginResponse) => {
+  logInUser(): void{
+    this.userService.userLogIn(this.login).subscribe((data : LoginResponse) => {
       if(data && data.token){
         window.alert("Login Success");
         const decodedToken = jwtDecode<any>(data.token);
