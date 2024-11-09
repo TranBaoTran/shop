@@ -41,16 +41,20 @@ import { CartService } from '../../services/cart.service';
 export class ProductListComponent implements OnInit{
   products: undefined | Product[];
   Math = Math;
-  
+  currentUserId: number | null = null;
 
-  constructor(private productService: ProductService, private activeRoute: ActivatedRoute, private router: Router,
-              private cartService: CartService
+  constructor(
+    private productService: ProductService, 
+    private activeRoute: ActivatedRoute, 
+    private router: Router,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
       this.getProductList();
     });
+    this.currentUserId = Number(localStorage.getItem('userid'));
   }
 
   getProductList(){
@@ -83,5 +87,21 @@ export class ProductListComponent implements OnInit{
       quantity: 1 
     });
     console.log(product)
+  }
+
+  addCart(product: Product, userId: number | null) : void {
+    if (this.currentUserId !== null) {
+      this.cartService.addCart({
+        id: this.currentUserId,
+        productId: product.id,
+        date: Date.now.toString(),
+        quantity: 1,
+        userId: this.currentUserId 
+      }).subscribe(() => {
+        console.log('Product added to User cart:', product);
+      });
+    } else {
+      alert('Please log in to add items to the cart.');
+    }
   }
 }

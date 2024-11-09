@@ -5,27 +5,30 @@ import { HeaderComponent } from '../header/header.component';
 import { CartService } from '../../services/cart.service';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule,HeaderComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent],
   templateUrl: './cart.component.html',
-  styleUrl: './cart.component.css'
+  styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit{
+export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
-  totalAmount$: Observable<number>;  
+  totalAmount$: Observable<number>;
   inputQuantity: number = 1;
+  currentUserId: number | null = null;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private router: Router) {
     this.totalAmount$ = this.cartService.totalAmount$;
+    this.currentUserId = Number(localStorage.getItem('userid'));
   }
 
   ngOnInit(): void {
     this.cartItems = this.cartService.getCartItems();
   }
-  
+
   increaseQuantity(item: CartItem): void {
     item.quantity++;
     this.cartService.updateQuantity(item.productId, item.quantity);
@@ -44,13 +47,16 @@ export class CartComponent implements OnInit{
   }
 
   checkout(): void {
-    this.totalAmount$.subscribe(totalAmount => {
-      alert('Proceeding to checkout with total amount: ' + totalAmount);
+    this.cartService.getUserCart(Number(this.currentUserId)).subscribe(cart => {
+      console.log('Cart from API:', cart);  
+      alert('Thanh toán thành công!');
+      this.clearCart();
+      this.router.navigate(['']);
     });
   }
 
   clearCart(): void {
-    this.cartService.clearCart(); 
-    this.cartItems = this.cartService.getCartItems();
+    this.cartService.clearCart();
+    this.cartItems = [];
   }
 }

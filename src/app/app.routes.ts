@@ -17,12 +17,12 @@ export const routes: Routes = [
         component: HomeComponent,
         children: [
             { path: '', component: ProductListComponent },
+            { path: 'cart', component: CartComponent },
             { path: 'category/:query', component: ProductListComponent },
             { path: 'product-detail/:id', component: ProductDetailComponent}
         ]},
     { path: 'login', component: LoginComponent},
     { path: 'signup', component: SignupComponent},
-    { path: 'cart', component: CartComponent },
     { path: 'admin-profile', component: AdminProfileComponent },
     {   path: 'admin', 
         component: AdminComponent, 
