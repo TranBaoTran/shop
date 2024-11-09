@@ -27,8 +27,8 @@ export class CartService {
   }
 
   addCart(cart: {id: number, productId: number, date: string, quantity: number, userId: number }): Observable<Cart> {
-    const userId = localStorage.getItem('userid'); 
-  
+    const userId = localStorage.getItem('userid');
+
     if (!userId) {
       console.error('User ID is not found in localStorage');
       return of(); 

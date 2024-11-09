@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute,  Router } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { CartService } from '../../services/cart.service';
@@ -20,9 +20,10 @@ export class ProductDetailComponent {
   currentUserId: number | null = null;
 
   constructor(private route: ActivatedRoute, private productService : ProductService,
-    private cartService: CartService
+    private cartService: CartService, private router : Router
   ) {
-    this.currentUserId = Number(localStorage.getItem('userid'));
+    const storedUserId = localStorage.getItem('userid');
+    this.currentUserId = storedUserId ? Number(storedUserId) : null;
   }
 
 
@@ -38,19 +39,19 @@ export class ProductDetailComponent {
     })
   } 
 
-    addCart(product: Product, userId: number | null) : void {
-      if (this.currentUserId !== null) {
-        this.cartService.addCart({
-          id: this.currentUserId,
-          productId: product.id,
-          date: Date.now.toString(),
-          quantity: this.inputQuantity,
-          userId: this.currentUserId 
-        }).subscribe(() => {
-          console.log('Product added to User cart:', product);
-        });
-      } else {
-        alert('Please log in to add items to the cart.');
-      }
+  addCart(product: Product, userId: number | null) : void {
+    if (this.currentUserId !== null) {
+      this.cartService.addCart({
+        id: this.currentUserId,
+        productId: product.id,
+        date: Date.now.toString(),
+        quantity: this.inputQuantity,
+        userId: this.currentUserId 
+      }).subscribe(() => {
+        console.log('Product added to User cart:', product);
+      });
+    } else {
+      this.router.navigate(['/login']);
     }
+  }
 }

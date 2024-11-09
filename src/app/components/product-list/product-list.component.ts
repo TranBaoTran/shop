@@ -91,7 +91,7 @@ export class ProductListComponent implements OnInit{
         console.log('Product added to User cart:', product);
       });
     } else {
-      window.alert('Please log in to add items to the cart.');
+      this.router.navigate(['login']);
     }
   }
 }
