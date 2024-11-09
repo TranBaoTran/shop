@@ -13,19 +13,21 @@ import { AdminProfileComponent } from './components/admin-profile/admin-profile.
 import { AdminCartComponent } from './components/admin-cart/admin-cart.component';
 
 export const routes: Routes = [
-    {   path: '', 
+    {   path: '',
         component: HomeComponent,
         children: [
             { path: '', component: ProductListComponent },
             { path: 'cart', component: CartComponent },
             { path: 'category/:query', component: ProductListComponent },
-            { path: 'product-detail/:id', component: ProductDetailComponent}
+            { path: 'product-detail/:id', component: ProductDetailComponent},
+            { path: 'admin-profile', component: AdminProfileComponent }
         ]},
     { path: 'login', component: LoginComponent},
     { path: 'signup', component: SignupComponent},
+    { path: 'cart', component: CartComponent },
     { path: 'admin-profile', component: AdminProfileComponent },
-    {   path: 'admin', 
-        component: AdminComponent, 
+    {   path: 'admin',
+        component: AdminComponent,
         canActivate: [authGuard],
         children: [
             { path: 'product', component: AdminProductComponent},
