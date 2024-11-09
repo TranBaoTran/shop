@@ -23,8 +23,8 @@
     <div class="row">
       <div class="col-md-4 d-flex justify-content-center align-items-center" *ngFor="let product of products">
 
-        <div class="card p-3 fixed-card-height" style="width: 600px;" (click)=" goToProductDetail(product.id) ">
-          <div class="d-flex justify-content-between align-items-center">
+        <div class="card p-3 fixed-card-height" style="width: 600px;" >
+          <div class="d-flex justify-content-between align-items-center"(click)=" goToProductDetail(product.id)">
             <div class="mt-2">
               <h4 class="text-uppercase">{{ product.category }}</h4>
             </div>
@@ -52,22 +52,12 @@
             <h6 class="text-muted ms-2 mb-0">{{ product.rating.rate }} - {{ product.rating.count }} Reviews</h6>
           </div>
 
-          <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+          <div class="d-flex justify-content-between align-items-center mt-2 mb-2" *ngIf="currentUserId">
             <span>Price {{ product.price | currency }}</span>
           </div>
-          <button class="btn btn-danger" (click)="addToCart(product)">Add to cart</button>
+          <button class="btn btn-danger" (click)="addCart(product, currentUserId)">Add to cart</button>
         </div>
       </div>
-    </div>
-
-    <div class="d-flex justify-content-center align-items-center my-2">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
     </div>
 
   </div>

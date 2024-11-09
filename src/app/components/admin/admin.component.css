@@ -1,0 +1,66 @@
+h1 {
+    padding: 0 1rem;
+}
+
+h2 {
+    padding: 1rem;
+}
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+/* Move the content down so that it won't be hidden by the toolbar */
+mat-sidenav {
+    width: 250px;  /* Full width when open */
+    overflow: visible; /* Ensure icons and content are visible */
+    padding-top: 3.5rem;
+}
+
+mat-sidenav.collapsed {
+    transform: translateX(-100%); /* Slide out when collapsed */
+    width: 60px;
+}
+
+@media screen and (min-width: 600px) {
+    mat-sidenav {
+        padding-top: 4rem;
+    }
+}
+
+mat-sidenav .entry {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    overflow: visible; /* Prevent clipping of icons */
+}
+
+mat-icon {
+    min-width: 24px;
+    min-height: 24px;
+}
+
+/* Move the content down so that it won't be hidden by the toolbar */
+mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+@media screen and (min-width: 600px) {
+    mat-sidenav-content {
+        padding-top: 4rem;
+    }
+}
+
+
+.spacer {
+    flex-grow: 1;
+}

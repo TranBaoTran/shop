@@ -26,4 +26,22 @@ export class UserService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  getAll(): Observable<User[]>{
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
+  // Hàm lấy tất cả người dùng
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
+  // Hàm lấy thông tin người dùng theo ID
+  getUserById(id: string): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`);
+  }
+
+  deleteUser(id : number): Observable<User>{
+    return this.http.delete<User>(`${this.apiUrl}/${id}`);
+  }
 }

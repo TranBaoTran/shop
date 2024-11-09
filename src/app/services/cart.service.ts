@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, map, Observable } from 'rxjs';
-import { CartItem } from '../models/product.model';
+import { Cart, CartItem } from '../models/product.model';
 import { ProductService } from './product.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,24 @@ export class CartService {
   cartItems: CartItem[] = []; 
   private totalAmountSubject = new BehaviorSubject<number>(0);
   private totalItemsSubject = new BehaviorSubject<number>(0);
+  private cartSubject = new BehaviorSubject<Cart[]>([]);
 
+  cart$ = this.cartSubject.asObservable();
   totalAmount$ = this.totalAmountSubject.asObservable();
   totalItems$ = this.totalItemsSubject.asObservable();
 
-  constructor() {
+  private apiUrl = 'https://fakestoreapi.com/carts';
+
+  constructor(private http: HttpClient) {
     this.loadCartFromLocalStorage();
+  }
+
+  addCart(cart:{ productId: number, date: String, quantity: number, userId: number }): Observable<Cart> {
+    return this.http.post<Cart>(this.apiUrl, cart);
+  }
+
+  getCart(): Observable<Cart[]> {
+    return this.http.get<Cart[]>(this.apiUrl);
   }
   
   addToCart(item: CartItem): void {
@@ -71,5 +84,17 @@ export class CartService {
       this.cartItems = JSON.parse(savedCart);
       this.updateCartState();
     }
+  }
+
+  getUserCart(id : number): Observable<Cart[]>{
+    return this.http.get<Cart[]>(`${this.apiUrl}/user/${id}`);
+  }
+
+  getAll(): Observable<Cart[]>{
+    return this.http.get<Cart[]>(`${this.apiUrl}`);
+  }
+
+  getByDateRange(start : string, end : string): Observable<Cart[]>{
+    return this.http.get<Cart[]>(this.apiUrl, {params: {startdate: start, enddate: end}});
   }
 }
