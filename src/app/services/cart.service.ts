@@ -26,18 +26,17 @@ export class CartService {
   // Thêm sản phẩm vào giỏ hàng
   addCart(cart: {id:number, productId: number, date: string, quantity: number, userId: number }): Observable<Cart> {
     // Lấy userId từ localStorage
-    const userId = localStorage.getItem('userid'); // Giả sử 'userId' đã được lưu trữ trong localStorage
+    const userId = localStorage.getItem('userid'); 
 
     // Kiểm tra nếu userId không có trong localStorage
     if (!userId) {
-      // Xử lý trường hợp không tìm thấy userId trong localStorage
       console.error('User ID is not found in localStorage');
       return of(); // Trả về observable của null hoặc xử lý lỗi như cần thiết
     }
 
     return this.productService.getProductById(cart.productId).pipe(
       map(product => {
-        // Tạo CartItem từ thông tin sản phẩm và các tham số trong cart
+
         const cartItem: CartItem = {
           productId: product.id,
           title: product.title,
@@ -90,12 +89,14 @@ export class CartService {
     this.totalAmountSubject.next(totalAmount);
     this.totalItemsSubject.next(totalQuantity);
 
+    const userId = localStorage.getItem('userid');
+
     // Cập nhật giỏ hàng (cartSubject) chứa Cart[]
     const cartState: Cart[] = [
       {
-        id: 1,
-        userId: 1, // Thay đổi theo logic của bạn, có thể lấy từ localStorage
-        date: new Date().toISOString(),
+        id:Number(userId),
+        userId: Number(userId),
+        date: Date.now.toString(),
         products: this.cartItems.map(item => ({ productId: item.productId, quantity: item.quantity })) // Danh sách sản phẩm trong giỏ hàng
       }
     ];
