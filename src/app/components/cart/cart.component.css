@@ -2,7 +2,7 @@
   width: 80%;
   margin: auto;
   padding: 80px;
-
+  min-height: 85vh;
 }
 
 table {
