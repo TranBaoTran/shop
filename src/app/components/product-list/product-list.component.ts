@@ -78,17 +78,6 @@ export class ProductListComponent implements OnInit{
     this.router.navigate(['/product-detail', id]);
   }
   
-  addToCart(product: Product) {
-    this.cartService.addToCart({ 
-      productId: product.id, 
-      title: product.title, 
-      price: product.price, 
-      image: product.image,
-      quantity: 1 
-    });
-    console.log(product)
-  }
-
   addCart(product: Product, userId: number | null) : void {
     if (this.currentUserId !== null) {
       this.cartService.addCart({

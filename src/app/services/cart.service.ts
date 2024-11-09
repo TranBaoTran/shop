@@ -26,20 +26,16 @@ export class CartService {
     this.loadCartFromLocalStorage();
   }
 
-  // Thêm sản phẩm vào giỏ hàng
-  addCart(cart: {id:number, productId: number, date: string, quantity: number, userId: number }): Observable<Cart> {
-    // Lấy userId từ localStorage
+  addCart(cart: {id: number, productId: number, date: string, quantity: number, userId: number }): Observable<Cart> {
     const userId = localStorage.getItem('userid'); 
-
-    // Kiểm tra nếu userId không có trong localStorage
+  
     if (!userId) {
       console.error('User ID is not found in localStorage');
-      return of(); // Trả về observable của null hoặc xử lý lỗi như cần thiết
+      return of(); 
     }
-
+  
     return this.productService.getProductById(cart.productId).pipe(
       map(product => {
-
         const cartItem: CartItem = {
           productId: product.id,
           title: product.title,
@@ -47,11 +43,9 @@ export class CartService {
           quantity: cart.quantity,
           image: product.image
         };
-
-        // Thêm CartItem vào giỏ hàng (CartItems)
+  
         this.addToCart(cartItem);
-
-        // Tạo một Cart mới với các thuộc tính cần thiết
+  
         const newCart: Cart = {
           id: cart.id, 
           userId: Number(userId), 
@@ -60,13 +54,22 @@ export class CartService {
             { productId: cart.productId, quantity: cart.quantity } 
           ]
         };
-
+  
+        // Gọi API để lưu giỏ hàng vào hệ thống (server)
+        this.http.post<Cart>(this.apiUrl, newCart).subscribe(response => {
+          console.log('Cart saved to API:', response);
+  
+          // Sau khi lưu vào API, có thể gọi lại phương thức để cập nhật trạng thái giỏ hàng cục bộ
+          this.updateCartState(); // Cập nhật giỏ hàng cục bộ
+        });
+  
         // Lưu giỏ hàng vào localStorage
         this.saveCartItemToLocalStorage(); // Lưu CartItem[] vào localStorage
-        return newCart; // Trả về Cart mới với thông tin cơ bản
+        return newCart; 
       })
     );
   }
+  
 
   // Thêm sản phẩm vào giỏ hàng
   addToCart(item: CartItem): void {
