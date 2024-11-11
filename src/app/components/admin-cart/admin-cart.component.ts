@@ -57,13 +57,35 @@ export class AdminCartComponent implements AfterViewInit {
   };
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((products: Product[]) => {
-      products.forEach((product) => this.productMap.set(product.id, product));
-    });
+    this.productService.getProducts().subscribe({
+      next: (products: Product[]) => {
+        if (products) {
+          products.forEach((product) => this.productMap.set(product.id, product));
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getProducts request completed.');
+      },
+    });  
 
-    this.userService.getAll().subscribe((users: User[]) => {
-      users.forEach((user) => this.userMap.set(user.id, user));
-    });
+    this.userService.getAll().subscribe({
+      next: (users: User[]) => {
+        if (users) {
+          users.forEach((user) => this.userMap.set(user.id, user));
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getUsers request completed.');
+      },
+    }); 
   }
 
   ngAfterViewInit(): void {
@@ -104,10 +126,19 @@ export class AdminCartComponent implements AfterViewInit {
   }
 
   getCartData(start: string, end: string): void{
-    this.cartService.getByDateRange(start, end).subscribe(data => {
-      if(data){
-        this.dataSource.data = data;
-      }
-    })
+    this.cartService.getByDateRange(start, end).subscribe({
+      next: (data: Cart[]) => {
+        if (data) {
+          this.dataSource.data = data;
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getByDateRange request completed.');
+      },
+    }); 
   }
 }

@@ -61,12 +61,22 @@ export class AdminProductComponent implements AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    this.productService.getProducts().subscribe(data =>{
-      if (data){
-        this.dataSource.data = data;
-        this.resultsLength = data.length;
-      }
-    })
+    this.productService.getProducts().subscribe({
+      next: (data: Product[]) => {
+        if (data) {
+          this.dataSource.data = data;
+          this.resultsLength = data.length;
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getProducts request completed.');
+      },
+    });
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     
@@ -82,9 +92,20 @@ export class AdminProductComponent implements AfterViewInit{
   }
 
   getCategories(){
-    this.productService.getCategories().subscribe(data =>{
-      this.categories = data;
-    })
+    this.productService.getCategories().subscribe({
+      next: (data: string[]) => {
+        if (data) {
+          this.categories = data; 
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getCategories request completed.');
+      },
+    }); 
   }
 
   onFileChange(event: any): void {
@@ -132,15 +153,22 @@ export class AdminProductComponent implements AfterViewInit{
   }
 
   deleteProduct(id : number): void{
-    if(window.confirm('Are you sure you want to delete this item ?')){
-      this.productService.deleteProduct(id).subscribe(data => {
-        if(data){
-          this.dataSource.data = this.dataSource.data.filter(product => product.id !== id);
+    if(window.confirm('Are you sure you want to delete this item ?')){      
+      this.productService.deleteProduct(id).subscribe({
+        next: (data: Product) => {
+          if (data) {
+            this.dataSource.data = this.dataSource.data.filter(product => product.id !== id);
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('deleteProduct request completed.');
           window.alert("Delete successfully");
-        }else{
-          window.alert("There is something wrong");
-        }
-      })  
+        },
+      }); 
     }
   }
 
@@ -160,18 +188,25 @@ export class AdminProductComponent implements AfterViewInit{
 
   editProductSubmit(id : number): void{
     if(window.confirm('Are you sure you want to edit this item ?')){
-      this.productService.updateProduct(id, this.editProduct).subscribe(data => {
-        if(data){
-          const index = this.dataSource.data.findIndex(product => product.id === id);
-          if (index !== -1) {
-            this.dataSource.data[index] = data;
+      this.productService.updateProduct(id, this.editProduct).subscribe({
+        next: (data: Product) => {
+          if (data) {
+            const index = this.dataSource.data.findIndex(product => product.id === id);
+            if (index !== -1) {
+              this.dataSource.data[index] = data;
+            }
+            this.editCollapse.collapsed;
           }
-          this.editCollapse.collapsed;
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('updateProduct request completed.');
           window.alert("Update successfully");
-        }else{
-          window.alert("There is something wrong");
-        }
-      })  
+        },
+      }); 
     }
   }
 }

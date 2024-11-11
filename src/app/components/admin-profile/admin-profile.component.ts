@@ -41,8 +41,19 @@ export class AdminProfileComponent implements OnInit{
     const storedUserId = localStorage.getItem('userid');
     const userId = storedUserId ? Number(storedUserId) : null;
     if (userId) {
-      this.userService.getUserById(userId).subscribe((data: User) => {
-        this.user = data;
+      this.userService.getUserById(userId).subscribe({
+        next: (data: User) => {
+          if (data) {
+            this.user = data;
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('getUserById request completed.');
+        },
       });
     } else {
       console.error('User ID not found in localStorage');
@@ -51,12 +62,20 @@ export class AdminProfileComponent implements OnInit{
 
   updateUserInfo(): void{
     if(window.confirm('Are you sure you want to edit this information ?')){
-      this.userService.updateUserData(this.user).subscribe(data => {
-        if (data) {
+      this.userService.updateUserData(this.user).subscribe({
+        next: (data: User) => {
+          if (data) {
+            this.user = data;
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('updateUserData request completed.');
           window.alert("Change Success");
-        } else {
-          window.alert("Change Error !!!");
-        }
+        },
       });
     }   
   }

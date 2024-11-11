@@ -41,12 +41,21 @@ export class SignupComponent implements OnInit {
   }
 
   signUpUser(): void{
-    this.userService.userSignUp(this.user).subscribe(data => {
-      if(data){
-        window.alert('Sign up successfully. Please log in.');
-      }else{
-        window.alert('Sign up error.');
-      }
-    });
+    this.userService.userSignUp(this.user).subscribe({
+      next: (data: User) => {
+        if (data) {
+          window.alert('Sign up successfully. Please log in.');
+        } else {
+          window.alert('Sign up error.');
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('Sign-up request completed.');
+      },
+    });  
   }
 }

@@ -42,9 +42,20 @@ export class HeaderComponent implements OnInit {
   }
 
   getCategories(){
-    this.productService.getCategories().subscribe(data =>{
-      this.categories = data;
-    })
+    this.productService.getCategories().subscribe({
+      next: (data: string[]) => {
+        if (data) {
+          this.categories = data; 
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getCategories request completed.');
+      },
+    }); 
   }
 
   logOut(){

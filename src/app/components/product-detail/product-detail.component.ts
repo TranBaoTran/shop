@@ -32,11 +32,20 @@ export class ProductDetailComponent {
   }
 
   getProduct(){
-    this.productService.getProductById(this.route.snapshot.params['id']).subscribe(data => {
-      if(data){
-        this.product = data;
-      }
-    })
+    this.productService.getProductById(this.route.snapshot.params['id']).subscribe({
+      next: (data: Product) => {
+        if (data) {
+          this.product = data; 
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getProductById request completed.');
+      },
+    }); 
   } 
 
   addCart(product: Product, userId: number | null) : void {

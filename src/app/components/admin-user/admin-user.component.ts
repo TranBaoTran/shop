@@ -39,18 +39,39 @@ export class AdminUserComponent implements AfterViewInit{
   };
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((products: Product[]) => {
-      products.forEach((product) => this.productMap.set(product.id, product));
-    });
+    this.productService.getProducts().subscribe({
+      next: (products: Product[]) => {
+        if (products) {
+          products.forEach((product) => this.productMap.set(product.id, product));
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getProducts request completed.');
+      },
+    }); 
   }
 
   ngAfterViewInit(): void {
-    this.userService.getAll().subscribe(data =>{
-      if (data){
-        this.dataSource.data = data;
-        this.resultsLength = data.length;
-      }
-    })
+    this.userService.getAll().subscribe({
+      next: (data: User[]) => {
+        if (data) {
+          this.dataSource.data = data;
+          this.resultsLength = data.length;
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getUsers request completed.');
+      },
+    }); 
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     
@@ -82,11 +103,20 @@ export class AdminUserComponent implements AfterViewInit{
   }
 
   getUserCart(id : number): void{
-    this.cartService.getUserCart(id).subscribe(data => {
-      if(data){
-        this.userCart  = data;
-      }
-    })
+    this.cartService.getUserCart(id).subscribe({
+      next: (data: Cart[]) => {
+        if (data) {
+          this.userCart  = data;
+        }
+      },
+      error: (error) => {
+        window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.log('getUserCart request completed.');
+      },
+    }); 
   }
 
   getTotalSum(ucart : Cart): number {
@@ -103,14 +133,23 @@ export class AdminUserComponent implements AfterViewInit{
 
   deleteUser(id : number): void{
     if(window.confirm('Are you sure you want to delete this user ?')){
-      this.userService.deleteUser(id).subscribe(data => {
-        if(data){
-          this.dataSource.data = this.dataSource.data.filter(user => user.id !== id);
+      this.userService.deleteUser(id).subscribe({
+        next: (data: User) => {
+          if (data) {
+            this.dataSource.data = this.dataSource.data.filter(user => user.id !== id);
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('deleteUser request completed.');
           window.alert("Delete successfully");
-        }else{
-          window.alert("There is something wrong");
-        }
-      })
+        },
+      }); 
     }
+
+    
   }
 }

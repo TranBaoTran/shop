@@ -61,17 +61,35 @@ export class ProductListComponent implements OnInit{
   getProductList(){
     const cate = this.activeRoute.snapshot.paramMap.get('query'); 
     if (cate) {
-      this.productService.getProductsByCategory(cate).subscribe(data => {
-        if (data) {
-          this.products = data; 
-        }
-      });
+      this.productService.getProductsByCategory(cate).subscribe({
+        next: (data: Product[]) => {
+          if (data) {
+            this.products = data; 
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('getProductByCategory request completed.');
+        },
+      });  
     } else {
-      this.productService.getProducts().subscribe(data => {
-        if (data) {
-          this.products = data; 
-        }
-      });
+      this.productService.getProducts().subscribe({
+        next: (data: Product[]) => {
+          if (data) {
+            this.products = data; 
+          }
+        },
+        error: (error) => {
+          window.alert(`An error occurred: ${error.message || 'Unknown error'}`);
+          console.error('Error:', error);
+        },
+        complete: () => {
+          console.log('getProducts request completed.');
+        },
+      });  
     }
   }
 
