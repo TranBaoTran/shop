@@ -13,7 +13,7 @@
         </div>
         <p class="lead">{{ product.description}}</p>
         <div class="d-flex">
-          <input id="inputQuantity" class="form-control text-center me-3" type="number"  [(ngModel)]="inputQuantity" style="max-width: 3rem">
+          <input id="inputQuantity" class="form-control text-center me-3" type="number"  [(ngModel)]="inputQuantity" style="max-width: 3rem" min="1">
           <button class="btn btn-outline-dark flex-shrink-0" type="button" (click)="addCart(product, currentUserId)">
 
             <i class="bi bi-cart-fill me-1"></i>
